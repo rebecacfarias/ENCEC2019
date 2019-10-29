@@ -1,5 +1,55 @@
 # depslib dependency file v1.0
-1514140574 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
+1572316215 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+
+1572316571 c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.h
+
+1572290363 c:\users\rebeca\documents\cc\encec2019\encec2019\evento.h
+	"data_hora.c"
+
+1572316388 c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.h
+
+1572288814 c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.h
+
+1572316797 c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.h
+
+1572287360 source:c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1572289662 c:\users\rebeca\documents\cc\encec2019\encec2019\evento.c
+	<stdlib.h>
+	<string.h>
+	"evento.h"
+
+1572290310 c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.c
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+
+1572289931 source:c:\users\rebeca\documents\cc\encec2019\encec2019\evento.c
+	<stdlib.h>
+	<string.h>
+	"evento.h"
+
+1572316388 source:c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.c
+	<stdlib.h>
+	<string.h>
+	"palestrante.h"
+
+1572316563 source:c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.c
+	<stdlib.h>
+	<string.h>
+	"congressista.h"
+
+1572316900 source:c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.c
+	<stdlib.h>
+	<string.h>
+	"organizador.h"
 
