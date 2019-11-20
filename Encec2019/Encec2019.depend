@@ -1,22 +1,20 @@
 # depslib dependency file v1.0
-1572316215 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
+1574214746 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	"congressista.h"
-	"palestrante.h"
-	"organizador.h"
+	<windows.h>
 
-1572316571 c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.h
+1574166405 c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.h
 
-1572290363 c:\users\rebeca\documents\cc\encec2019\encec2019\evento.h
+1573229173 c:\users\rebeca\documents\cc\encec2019\encec2019\evento.h
 	"data_hora.c"
 
-1572316388 c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.h
+1573068349 c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.h
 
 1572288814 c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.h
 
-1572316797 c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.h
+1573067039 c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.h
 
 1572287360 source:c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.c
 	<stdlib.h>
@@ -28,28 +26,85 @@
 	<string.h>
 	"evento.h"
 
-1572290310 c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.c
+1574208930 c:\users\rebeca\documents\cc\encec2019\encec2019\data_hora.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 
-1572289931 source:c:\users\rebeca\documents\cc\encec2019\encec2019\evento.c
+1573229240 source:c:\users\rebeca\documents\cc\encec2019\encec2019\evento.c
 	<stdlib.h>
 	<string.h>
 	"evento.h"
 
-1572316388 source:c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.c
+1573068245 source:c:\users\rebeca\documents\cc\encec2019\encec2019\palestrante.c
 	<stdlib.h>
 	<string.h>
 	"palestrante.h"
 
-1572316563 source:c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.c
+1574166336 source:c:\users\rebeca\documents\cc\encec2019\encec2019\congressista.c
 	<stdlib.h>
+	<stdio.h>
 	<string.h>
+	<windows.h>
 	"congressista.h"
 
-1572316900 source:c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.c
+1573067039 source:c:\users\rebeca\documents\cc\encec2019\encec2019\organizador.c
 	<stdlib.h>
 	<string.h>
 	"organizador.h"
+
+1572613477 c:\users\rebeca\documents\cc\encec2019\encec2019\menus.h
+
+1572612252 c:\users\rebeca\documents\cc\encec2019\encec2019\cadastrar.h
+
+1573527006 c:\users\rebeca\documents\cc\encec2019\encec2019\cadastrar.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+	<stdio.h>
+	<string.h>
+	<windows.h>
+
+1573526504 c:\users\rebeca\documents\cc\encec2019\encec2019\remover.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+
+1572615365 c:\users\rebeca\documents\cc\encec2019\encec2019\editar.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+
+1572613171 c:\users\rebeca\documents\cc\encec2019\encec2019\listar.c
+
+1573067684 c:\users\rebeca\documents\cc\encec2019\encec2019\lista_eventos.c
+	<stdlib.h>
+
+1573067684 source:c:\users\rebeca\documents\cc\encec2019\encec2019\lista_eventos.c
+	<stdlib.h>
+
+1572615365 source:c:\users\rebeca\documents\cc\encec2019\encec2019\editar.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+
+1573530500 source:c:\users\rebeca\documents\cc\encec2019\encec2019\listar.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+	<stdio.h>
+	<string.h>
+	<windows.h>
+
+1573528334 source:c:\users\rebeca\documents\cc\encec2019\encec2019\remover.c
+	"congressista.h"
+	"palestrante.h"
+	"organizador.h"
+
+1574212040 source:c:\users\rebeca\documents\cc\encec2019\encec2019\cadastrar.c
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<ctype.h>
+	"data_hora.c"
 

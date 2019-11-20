@@ -1,11 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "congressista.h"
-#include "palestrante.h"
-#include "organizador.h"
+#include <windows.h>
 
 
+
+
+void cadastrar_congressista();
+void cadastrar_palestrante();
+void cadastrar_evento();
+void cadastrar_organizador();
+
+void editar_congressista();
+void editar_evento();
+void editar_organizador();
+void editar_palestrante();
+
+void listar_congressista();
+void listar_evento();
+void listar_organizador();
+void listar_palestrante();
+
+void remover_congressista();
+void remover_evento();
+void remover_organizador();
+void remover_palestrante();
+
+void submenu_cadastrar();
+void submenu_remover();
+void submenu_editar();
+void submenu_listar();
+void submenu_ja_cadastrado();
+//coisinhas
+void pontinhos(){
+    for(int i = 0;i<5;i++){
+        for(int j = 0;j<5;j++){
+        Sleep(50);
+        printf(".");
+    }
+}
+}
 //fazer prototipos das funcoes q tera aq
 
 /*
@@ -61,8 +95,181 @@ CANCELAR INSCRIÇÃO EM EVENTOS;
 -> adiciona na lista de codigos dos eventos, remove, etc;
 */
 
-int main()
-{
+void menu(){
+    pontinhos();
+    system("cls");
+    pontinhos();
+    int op=0;
+    printf("\nGERENCIAMENTO ENCEC 2019\n");
+    printf("1 - CADASTRAR\n");
+    printf("2 - EDITAR\n");
+    printf("3 - REMOVER\n");
+    printf("4- LISTAR\n");
+    scanf("%d",&op);
+    while(op<=0||op>4){
+        system("cls");
+        printf("GERENCIAMENTO ENCEC 2019\n");
+        printf("1 - CADASTRAR\n");
+        printf("2 - EDITAR\n");
+        printf("3 - REMOVER\n");
+        printf("4 - LISTAR\n");
+        printf("5 - PARTICIPANTE CADASTRADO\n");
+        scanf("%d",&op);
+    }
+    switch(op){
+    case 1: submenu_cadastrar(); break;
+    case 2: submenu_editar(); break;
+    case 3: submenu_remover(); break;
+    case 4: submenu_listar();break;
+    case 5: submenu_ja_cadastrado();break;
+    default: menu();
+    }
+    printf("\nPRESSIONE QUALQUER TECLA PARA VOLTAR AO INICIO");
+    setbuf(stdin,NULL);
+    getchar();
+    menu();
+}
+void submenu_cadastrar(){
+    system("cls");
+    //pontinhos();
+    Sleep(300);
+    system("cls");
+    int op=0;
+    printf("CADASTRAMENTO ENCEC 2019\n");
+    printf("1 - CADASTRAR CONGRESSISTA\n");
+    printf("2 - CADASTRAR PALESTRANTE\n");
+    printf("3 - CADASTRAR EVENTO\n");
+    printf("4 - CADASTRAR ORGANIZADOR\n");
+    printf("5 - VOLTAR AO GERENCIAMENTO\n");
+    printf("DIGITE 1,2,3,4 OU 5: ");
+    scanf("%d",&op);
+    while(op<=0||op>5){
+        system("cls");
+        printf("CADASTRAMENTO ENCEC 2019\n");
+        printf("1 - CADASTRAR CONGRESSISTA\n");
+        printf("2 - CADASTRAR PALESTRANTE\n");
+        printf("3 - CADASTRAR EVENTO\n");
+        printf("4 - CADASTRAR ORGANIZADOR\n");
+        printf("5 - VOLTAR AO GERENCIAMENTO\n");
+        printf("DIGITE 1,2,3,4 OU 5: ");
+        scanf("%d",&op);
+    }
 
+    if(op==1){
+        cadastrar_congressista();
+    }
+
+    else if (op == 2){
+
+    }
+    else if (op ==3){
+        cadastrar_evento();
+    }
+    else if(op == 4){
+
+    }
+    else{menu();}
+}
+void submenu_editar(){
+    system("cls");
+    pontinhos();
+    Sleep(300);
+    system("cls");
+    int op=0;
+    printf("(EDITAR) ENCEC 2019\n");
+    printf("1 - EDITAR CONGRESSISTA");
+    printf("2 - EDITAR PALESTRANTE");
+    printf("3 - EDITAR EVENTO");
+    printf("4 - EDITAR ORGANIZADOR");
+    printf("5 - VOLTAR AO GERENCIAMENTO");
+    scanf("%d",&op);
+    while(op<=0||op>5){
+        system("cls");
+        printf("(EDITAR) ENCEC 2019\n");
+        printf("1 - EDITAR CONGRESSISTA");
+        printf("2 - EDITAR PALESTRANTE");
+        printf("3 - EDITAR EVENTO");
+        printf("4 - EDITAR ORGANIZADOR");
+        printf("5 - VOLTAR AO GERENCIAMENTO");
+        scanf("%d",&op);
+    }
+    switch(op){
+    case 1: editar_congressista();break;
+    case 2: editar_palestrante();break;
+    case 3: editar_evento();break;
+    case 4: editar_organizador();break;
+    default: menu();
+    }
+}
+void submenu_remover(){
+    system("cls");
+    pontinhos();
+    Sleep(300);
+    system("cls");
+    int op=0;
+    printf("(REMOVER) ENCEC 2019\n");
+    printf("1 - REMOVER CONGRESSISTA");
+    printf("2 - REMOVER PALESTRANTE");
+    printf("3 - REMOVER EVENTO");
+    printf("4 - REMOVER ORGANIZADOR");
+    printf("5 - VOLTAR AO GERENCIAMENTO");
+    scanf("%d",&op);
+    while(op<=0||op>5){
+        system("cls");
+        printf("(REMOVER) ENCEC 2019\n");
+        printf("1 - REMOVER CONGRESSISTA");
+        printf("2 - REMOVER PALESTRANTE");
+        printf("3 - REMOVER EVENTO");
+        printf("4 - REMOVER ORGANIZADOR");
+        printf("5 - VOLTAR AO GERENCIAMENTO");
+        scanf("%d",&op);
+    }
+    switch(op){
+    case 1: remover_congressista();break;
+    case 2: remover_palestrante();break;
+    case 3: remover_evento();break;
+    case 4: remover_organizador();break;
+    default: menu();
+    }
+}
+void submenu_listar(){
+     system("cls");
+    pontinhos();
+    Sleep(300);
+    system("cls");
+    int op=0;
+    printf("(LISTAR) ENCEC 2019\n");
+    printf("1 - LISTAR CONGRESSISTAS");
+    printf("2 - LISTAR PALESTRANTES");
+    printf("3 - LISTAR EVENTOS");
+    printf("4 - LISTAR ORGANIZADORES");
+    printf("5 - VOLTAR AO GERENCIAMENTO");
+    scanf("%d",&op);
+    while(op<=0||op>5){
+        system("cls");
+        printf("(LISTAR) ENCEC 2019\n");
+        printf("1 - LISTAR CONGRESSISTAS");
+        printf("2 - LISTAR PALESTRANTES");
+        printf("3 - LISTAR EVENTOS");
+        printf("4 - LISTAR ORGANIZADORES");
+        printf("5 - VOLTAR AO GERENCIAMENTO");
+        scanf("%d",&op);
+    }
+    switch(op){
+    case 1: listar_congressista();break;
+    case 2: listar_palestrante();break;
+    case 3: listar_evento();break;
+    case 4: listar_organizador();break;
+    default: menu();
+    }
+}
+
+void submenu_ja_cadastrado(){
+
+}
+
+int main(){
+
+    menu();
     return 0;
 }

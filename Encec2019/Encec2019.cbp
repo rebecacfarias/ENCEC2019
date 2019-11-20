@@ -31,17 +31,47 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="cadastrar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="congressista.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="congressista.h">
 			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="data_hora.c">
+			<Option compilerVar="CC" />
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="editar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="evento.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="evento.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="listar.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="menus.h" />
+		<Unit filename="organizador.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="organizador.h" />
+		<Unit filename="palestrante.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="palestrante.h">
 			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="remover.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
 			<code_completion />

@@ -1,46 +1,39 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <windows.h>
 #include "congressista.h"
 
-struct congressista{
-    char cpf[15];
-    char nome[30];
-    char email[30];
-    int num_cadastro;
-    int codigos_eventos[10];
+
+
+struct codigos_eventoC{
+    int codigo;
+    codigos_eventoC *prox;
 };
-
-congressista *cadastrarC(char cpf[15],char nome[30],char email[30],int num_cadastro){
-    congressista *c = (congressista*) malloc(sizeof(congressista));
-    if(c!=NULL){
-        strcpy(c->cpf,cpf);
-        strcpy(c->nome,nome);
-        strcpy(c->email,email);
-        c->num_cadastro = num_cadastro;
-    }
-    return c;
+lista_eventosC *cria_lista_eventosC(){
+    lista_eventosC *li = (lista_eventosC*)malloc(sizeof(lista_eventosC));
+    if(li!=NULL)
+        *li = NULL;
+    return li;
 }
 
-void liberarC(congressista *c){
-    free(c);
-}
-void acessarC(congressista *c, char *cpf[12],char *nome[30],char *email[30],int *num_cadastro){
-    *cpf = c->cpf;
-    *nome = c->nome;
-    *email = c->email;
-    *num_cadastro = c->num_cadastro;
+int insere_eventoC(lista_eventosC *li,int codigo){
+        if(li==NULL) return 0;
+        codigos_eventoC *no = (codigos_eventoC*)malloc(sizeof(codigos_eventoC));
+        if(no==NULL) return 0;
+        no->codigo = codigo;
+        no->prox = NULL;
+        if((*li)==NULL){
+          *li = no;
+        }else{
+          codigos_eventoC *aux = *li;
+          while(aux->prox!=NULL){
+            aux = aux->prox;
+          }
+          aux->prox = no;
+        }
+        return 1;
 }
 
-void modificar_infoC(congressista *c,char nome[30],char email[30]){
-    strcpy(c->nome,nome);
-    strcpy(c->email,email);
-}
-
-void acessar_eventosC(congressista *c, int *eventos[10]){
-    //checar se o vetor n eh vazio e se condiz com algum dos codigos dos eventos
-    *eventos = c->codigos_eventos;
-}
-void adiciona_eventoP(congressista *c,int codigo);
-void remover_eventoP(congressista *c,int codigo);
 
 

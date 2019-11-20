@@ -19,7 +19,7 @@ struct data_hora{
 };
 
 typedef struct data_hora data_hora;
-
+/*
 void exibe_hora(hora *h){
     printf("%d:%d",h->horas,h->minutos);
 }
@@ -30,3 +30,4 @@ void exibe_data_hora(data_hora *dh){
 printf("%d:%d ",dh->h.horas,dh->h.minutos);
 printf(" %d/%d/%d",dh->dia.dia,dh->dia.mes,dh->dia.ano);
 }
+*/

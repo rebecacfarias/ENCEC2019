@@ -3,18 +3,23 @@
 
 
 
-typedef struct congressista congressista;
+typedef struct elemento_c elemento_c;
+typedef struct codigos_eventoC codigos_eventoC;
+typedef struct codigos_eventoC* lista_eventosC;
 
-congressista *cadastrarC(char cpf[15],char nome[30],char email[30],int num_cadastro);
-void liberarC(congressista *c);
-void acessarC(congressista *c, char *cpf[12],char *nome[30],char *email[30],int *num_cadastro);
-void acessar_eventosC(congressista *c, int *eventos[10]);
-void modificar_infoC(congressista *c,char nome[30],char email[30]);
-void adiciona_eventoC(congressista *c,int codigo);
-void remover_eventoC(congressista *c,int codigo);
+lista_eventosC *cria_lista_eventosC();
+int insere_eventoC(lista_eventosC *li,int codigo);
 
 
 
+
+//criar lista
+
+//adicionar na lista
+
+//remover da lista
+
+//editar na lista
 
 
 
