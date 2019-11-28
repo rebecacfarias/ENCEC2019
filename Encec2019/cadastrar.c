@@ -5,6 +5,14 @@
 
 #define LINHAS_PESSOA 5
 #define LINHAS_EVENTO 6
+#define AUD1 150
+#define AUD2 100
+#define AUD3 50
+#define SALA1 50
+#define SALA2 50
+#define SALA3 30
+#define LAB 20
+
 
 typedef struct{
     char cpf[12];
@@ -148,6 +156,25 @@ int pesquisa_no_arquivo(char *arquivo,char *string){
 
 
 //FUNCAO PRA RETORNAR O LIMITE DO EVENTO: recebe o codigo, abre arquivo, procura palavra palestra ou n sei q ou n sei q e retorna limite
+//FUNCAO PARA CADASTRAR LUGARES
+
+int capacidade_evento(char *arquivo){
+    if(pesquisa_no_arquivo(arquivo,"AUDITORIO 1"))
+        return AUD1;
+    if(pesquisa_no_arquivo(arquivo,"AUDITORIO 2"))
+        return AUD2;
+    if(pesquisa_no_arquivo(arquivo,"AUDITORIO 3"))
+        return AUD3;
+    if(pesquisa_no_arquivo(arquivo,"SALA 1"))
+        return SALA1;
+    if(pesquisa_no_arquivo(arquivo,"SALA 2"))
+        return SALA2;
+    if(pesquisa_no_arquivo(arquivo,"SALA 3"))
+        return SALA3;
+    if(pesquisa_no_arquivo(arquivo,"LABORATORIO 1") || pesquisa_no_arquivo(arquivo,"LABORATORIO 2") )
+        return LAB;
+    return 0;
+}
 
 
 void inscricao1(char *cong_nome,char *cpf){
@@ -164,7 +191,8 @@ void inscricao1(char *cong_nome,char *cpf){
     strcat(codigo,".txt");
     char nome[100] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\";
     strcat(nome,codigo);
-    inscricao2(nome,cong_nome,cpf,10);
+    int limite_evento = capacidade_evento(nome);
+    inscricao2(nome,cong_nome,cpf,limite_evento);
 }
 
 void inscricao2(char *arquivo_evento,char *nome,char *cpf,int limite_evento){
@@ -174,7 +202,8 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,int limite_evento){
         */
         FILE *evento;
         int linhas = conta_linhas(arquivo_evento);
-        if(linhas/4>limite_evento){
+        //formula pra contar quantos inscritos tem no evento atraves do numero de linhas
+        if(linhas/2-7>limite_evento){
             printf("EVENTO LOTADO!");
         }
         else{
@@ -364,6 +393,8 @@ void cria_arquivo_evento(char *caminho,evento ev){
     fprintf(ev1,"%s","CODIGO DO EVENTO: ");
     fprintf(ev1,"%s",ev.codigo);
     fprintf(ev1,"%c",'\n');
+    fprintf(ev1,"%s","INSCRITOS: ");
+    fprintf(ev1,"%c",'\n');
     fclose(ev1);
 
 
@@ -412,14 +443,33 @@ int cadastrar_evento(){
     printf("CARGA HORARIA: ");
     setbuf(stdin,NULL);
     gets(ev.carga_horaria);
+    printf("---------\n");
+    printf("-> AUDITORIO 1\n");
+    printf("-> AUDITORIO 2\n");
+    printf("-> AUDITORIO 3\n");
+    printf("-> SALA 1\n");
+    printf("-> SALA 2\n");
+    printf("-> SALA 3\n");
+    printf("-> LABORATORIO 1\n");
+    printf("-> LABORATORIO 2\n");
     printf("LOCAL: ");
     setbuf(stdin,NULL);
     gets(ev.local);
     strupr(ev.local);
+    while(strcmp(ev.local, "AUDITORIO 1")&&strcmp(ev.local, "AUDITORIO 2")&&strcmp(ev.local, "AUDITORIO 3")&&strcmp(ev.local, "SALA 1")&&strcmp(ev.local, "SALA 2")&&strcmp(ev.local, "SALA 3")&&strcmp(ev.local, "LABORATORIO 1")&&strcmp(ev.local, "LABORATORIO 2")){
+        printf("TIPO INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
+        setbuf(stdin,NULL);
+        gets(ev.local);
+        strupr(ev.local);
+    }
     printf("HORARIO: ");
     setbuf(stdin,NULL);
     gets(ev.horario);
-    if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",ev.horario) && pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",ev.local)){
+    char teste[30] = "LOCAL: ";
+    strcat(teste,ev.local);
+    strcat(teste,"\n HORA: ");
+    strcat(teste,ev.horario); //VE SE FUNCIONA
+    if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",teste)){
         printf("IMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
         return 0;
     }
