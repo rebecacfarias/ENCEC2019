@@ -2,9 +2,9 @@
 #include <string.h>
 #include <windows.h>
 #include <ctype.h>
+#include "arquivo.h"
 
-#define LINHAS_PESSOA 5
-#define LINHAS_EVENTO 6
+
 #define AUD1 150
 #define AUD2 100
 #define AUD3 50
@@ -28,20 +28,20 @@ typedef struct{
 }congressista;
 
 typedef struct{
-    char *nome;
-    char *cpf;
-    char *email;
+    char nome[30];
+    char cpf[15];
+    char email[30];
 }organizador;
-
 
 typedef struct {
     char nome[30];
-    char codigo[5];
+    char codigo[1];
     char tipo[15];
     char palestrante[50];
     char local[15];
     char carga_horaria[5];
     char horario[5];
+    char data[11];
 }evento;
 
 
@@ -60,14 +60,59 @@ void limpa_tela(){
 
 }
 
-void exibe_arquivo(char *nome){
-        FILE *a;
-        char texto_str[30];
-        a = fopen(nome,"r");
-        while(fgets(texto_str, 20, a) != NULL)
-            printf("%s", texto_str);
-        fclose(a);
+
+void insere_inscricoes_congs(congressista cong, evento ev){
+    char *caminho = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\inscricoescong.txt";
+    FILE *p;
+    p = fopen(caminho,"a");
+
+    fprintf(p,"%s","NOME: ");
+    fprintf(p,"%s",cong.nome);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","CPF: ");
+    fprintf(p,"%s",cong.cpf);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","TIPO DE EVENTO: ");
+    fprintf(p,"%s",ev.tipo);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","INSCRITO EM: ");
+    fprintf(p,"%s",ev.nome);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","COD: ");
+    fprintf(p,"%s",ev.codigo);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%c",'\n');
+    fclose(p);
+
 }
+
+void insere_inscricoes_palest(palestrante palest, evento ev){
+
+    char *caminho = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\inscricoespalest.txt";
+    FILE *p;
+    p = fopen(caminho,"a");
+
+    fprintf(p,"%s","NOME: ");
+    fprintf(p,"%s",palest.nome);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","CPF: ");
+    fprintf(p,"%s",palest.cpf);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","TIPO DE EVENTO: ");
+    fprintf(p,"%s",ev.tipo);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","MINISTRANDO: ");
+    fprintf(p,"%s",ev.nome);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%s","COD: ");
+    fprintf(p,"%s",ev.codigo);
+    fprintf(p,"%c",'\n');
+    fprintf(p,"%c",'\n');
+    fclose(p);
+
+}
+
+
 char *concatenar(char *frase1,char *frase2){
     return strcat(frase1,frase2);
 }
@@ -115,7 +160,7 @@ int gerar_codigo_evento(){
     fclose(arq);
     return linhas/LINHAS_EVENTO *100;
 }
-
+/*
 int conta_linhas(char *arquivo){
     FILE *arqv;
     arqv = fopen(arquivo,"r");
@@ -154,10 +199,7 @@ int pesquisa_no_arquivo(char *arquivo,char *string){
 
 }
 
-
-//FUNCAO PRA RETORNAR O LIMITE DO EVENTO: recebe o codigo, abre arquivo, procura palavra palestra ou n sei q ou n sei q e retorna limite
-//FUNCAO PARA CADASTRAR LUGARES
-
+*/
 int capacidade_evento(char *arquivo){
     if(pesquisa_no_arquivo(arquivo,"AUDITORIO 1"))
         return AUD1;
@@ -191,8 +233,12 @@ void inscricao1(char *cong_nome,char *cpf){
     strcat(codigo,".txt");
     char nome[100] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\";
     strcat(nome,codigo);
+    if(pesquisa_no_arquivo(nome,cpf)){
+        printf("\nCONGRESSISTA JA CADASTRADO NESSE EVENTO!");
+    }else{
     int limite_evento = capacidade_evento(nome);
     inscricao2(nome,cong_nome,cpf,limite_evento);
+    }
 }
 
 void inscricao2(char *arquivo_evento,char *nome,char *cpf,int limite_evento){
@@ -207,6 +253,25 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,int limite_evento){
             printf("EVENTO LOTADO!");
         }
         else{
+        char busca_inscricao[50];
+        int teste=0;
+        strcpy(busca_inscricao,cpf);
+        char tipo[10];
+        if(pesquisa_no_arquivo(arquivo_evento,"CURSO"))
+            strcpy(tipo,"CURSO");
+        else if(pesquisa_no_arquivo(arquivo_evento,"OFICINA"))
+            strcpy(tipo,"OFICINA");
+
+        if(!strcmp(tipo,"CURSO") || !strcmp(tipo,"OFICINA")){
+            strcat(busca_inscricao,"\nTIPO DE EVENTO: ");
+            strcat(busca_inscricao,tipo);
+            teste = pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\inscricoescong.txt",busca_inscricao);
+        }
+
+        if(teste){
+            printf("\n JA ESTA INSCRITO EM UMA OFICINA/CURSO. \n");
+        }
+        else{
         evento = fopen(arquivo_evento,"a");
         if(arquivo_evento == NULL || conta_linhas(arquivo_evento)==0){
             printf("EVENTO NAO ENCONTRADO");
@@ -219,6 +284,7 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,int limite_evento){
         fprintf(evento,"%c",'\n');
         fclose(evento);
         }
+    }
 
 }
 
@@ -242,7 +308,7 @@ int cadastrar_palestrante(){
         if(num+palest.num_cadastro>300)
             printf(">>>> CONGRESSO LOTADO <<<<");
         else{
-        p = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt","w"); //POR ENQUANTO DEIXA W
+        p = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt","a"); //POR ENQUANTO DEIXA W
         if(p==NULL)
             printf("erro");
         printf("NOME: ");
@@ -304,7 +370,7 @@ int cadastrar_congressista(){
         if(cong.num_cadastro>300)
             printf(">>>> CONGRESSO LOTADO <<<<");
         else{
-        c = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt","w"); //POR ENQUANTO DEIXA W
+        c = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt","a"); //POR ENQUANTO DEIXA W
         if(c==NULL)
             printf("erro");
         printf("NOME: ");
@@ -313,27 +379,27 @@ int cadastrar_congressista(){
         printf("CPF: ");
         setbuf(stdin,NULL);
         scanf("%s",cong.cpf);
+        if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt",cong.cpf)){
+            printf("ja cadastrado");
+            return 0;
+        }
         printf("EMAIL: ");
         setbuf(stdin,NULL);
         gets(cong.email);
 
         strupr(cong.nome);
         strupr(cong.email);
-        fprintf(c,"%s","NUMERO DE CADASTRO: ");
-        fprintf(c,"%d",cong.num_cadastro);
+        fprintf(c,"%s","CPF: ");
+        fprintf(c,"%s",cong.cpf);
         fprintf(c,"%c",'\n');
         fprintf(c,"%s","NOME: ");
         fprintf(c,"%s",cong.nome);
         fprintf(c,"%c",'\n');
-        fprintf(c,"%s","CPF: ");
-        fprintf(c,"%s",cong.cpf);
-        if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt",cong.cpf)){
-            printf("ja cadastrado");
-            return 0;
-        }
-        fprintf(c,"%c",'\n');
         fprintf(c,"%s","EMAIL: ");
         fprintf(c,"%s",cong.email);
+        fprintf(c,"%c",'\n');
+        fprintf(c,"%s","NUMERO DE CADASTRO: ");
+        fprintf(c,"%d",cong.num_cadastro);
         fprintf(c,"%c",'\n');
 
         fclose(c);
@@ -356,9 +422,7 @@ int cadastrar_congressista(){
             op = toupper(op);
             }while(op!='S'&&op!='N');
             if(op=='S'){
-
-
-        printf("\nCADASTRO REALIZADO.\n");
+                inscricao1(cong.nome,cong.cpf);
             }
         }else{
             printf("\nAINDA NAO HA EVENTOS PARA SE INSCREVER");
@@ -375,11 +439,17 @@ void cria_arquivo_evento(char *caminho,evento ev){
     ev1 = fopen(caminho,"w");
     if(ev1==NULL)
         printf("\n wtf");
+    fprintf(ev1,"%s","CODIGO DO EVENTO: ");
+    fprintf(ev1,"%s",ev.codigo);
+    fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","TEMA: ");
     fprintf(ev1,"%s",ev.nome);
     fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","PALESTRANTE: ");
     fprintf(ev1,"%s",ev.palestrante);
+    fprintf(ev1,"%c",'\n');
+    fprintf(ev1,"%s","DATA: ");
+    fprintf(ev1,"%s",ev.data);
     fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","LOCAL: ");
     fprintf(ev1,"%s",ev.local);
@@ -389,9 +459,6 @@ void cria_arquivo_evento(char *caminho,evento ev){
     fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","CARGA HORARIA: ");
     fprintf(ev1,"%s",ev.carga_horaria);
-    fprintf(ev1,"%c",'\n');
-    fprintf(ev1,"%s","CODIGO DO EVENTO: ");
-    fprintf(ev1,"%s",ev.codigo);
     fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","INSCRITOS: ");
     fprintf(ev1,"%c",'\n');
@@ -419,11 +486,12 @@ int cadastrar_evento(){
         gets(ev.tipo);
         strupr(ev.tipo);
     }
-
-    printf("CODIGO: ");
+    do{
+    printf("CODIGO(A-Z ou a-z): ");
     setbuf(stdin,NULL);
     scanf("%s",ev.codigo);
-    strupr(ev.codigo);
+    }while(((int)ev.codigo[0]<(int)'A' || (int)ev.codigo[0]>(int)'Z') && ((int)ev.codigo[0]<(int)'a' || (int)ev.codigo[0]>(int)'z'));
+
     if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",ev.codigo)){
         printf("EVENTO JA CADASTRADO.");
         return 0;
@@ -432,10 +500,26 @@ int cadastrar_evento(){
     setbuf(stdin,NULL);
     scanf("%s",ev.nome);
     strupr(ev.nome);
+    if(!strcmp(ev.tipo,"GRUPO")){
+       int num;
+       do{
+       printf("NUMERO DE MEMBROS DA MESA(ATE 5): ");
+       scanf("%d",&num);
+       }while(num<1||num>5);
+
+       char **membros = (char**)malloc(num*sizeof(char*));
+       for(int i =0;i<num;i++)
+         membros[i]=(char*)malloc(sizeof(char)*30);
+       for(int i = 0;i<num;i++){
+         //le os membros dps desce la na hora de por no arquivo e testa, se for grupo add o vetor;
+       }
+
+    } //essa parte aq entra no else da de cima ate o teste
     printf("PALESTRANTE(s): ");
     setbuf(stdin,NULL);
     scanf("%s",ev.palestrante);
     strupr(ev.palestrante);
+
     if(!(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt",ev.palestrante))){
         printf("PALESTRANTE NAO CADASTRADO.");
         return 0;
@@ -457,28 +541,42 @@ int cadastrar_evento(){
     gets(ev.local);
     strupr(ev.local);
     while(strcmp(ev.local, "AUDITORIO 1")&&strcmp(ev.local, "AUDITORIO 2")&&strcmp(ev.local, "AUDITORIO 3")&&strcmp(ev.local, "SALA 1")&&strcmp(ev.local, "SALA 2")&&strcmp(ev.local, "SALA 3")&&strcmp(ev.local, "LABORATORIO 1")&&strcmp(ev.local, "LABORATORIO 2")){
-        printf("TIPO INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
+        printf("LOCAL INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
         setbuf(stdin,NULL);
         gets(ev.local);
         strupr(ev.local);
     }
+    printf("DATA: ");
+    setbuf(stdin,NULL);
+    scanf("%s",ev.data);
     printf("HORARIO: ");
     setbuf(stdin,NULL);
     gets(ev.horario);
-    char teste[30] = "LOCAL: ";
+    char teste[50] = "DATA: ";
+    strcat(teste,ev.data);
+    strcat(teste,"\n");
+    strcat(teste,"LOCAL: ");
     strcat(teste,ev.local);
-    strcat(teste,"\n HORA: ");
-    strcat(teste,ev.horario); //VE SE FUNCIONA
+    strcat(teste,"\n");
+    strcat(teste,"HORA: ");
+    strcat(teste,ev.horario);
+//VE SE FUNCIONA
     if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",teste)){
         printf("IMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
         return 0;
     }
 
+    fprintf(e,"%s","CODIGO DO EVENTO: ");
+    fprintf(e,"%s",ev.codigo);
+    fprintf(e,"%c",'\n');
     fprintf(e,"%s","TEMA: ");
     fprintf(e,"%s",ev.nome);
     fprintf(e,"%c",'\n');
     fprintf(e,"%s","PALESTRANTE: ");
     fprintf(e,"%s",ev.palestrante);
+    fprintf(e,"%c",'\n');
+    fprintf(e,"%s","DATA: ");
+    fprintf(e,"%s",ev.data);
     fprintf(e,"%c",'\n');
     fprintf(e,"%s","LOCAL: ");
     fprintf(e,"%s",ev.local);
@@ -489,8 +587,6 @@ int cadastrar_evento(){
     fprintf(e,"%s","CARGA HORARIA: ");
     fprintf(e,"%s",ev.carga_horaria);
     fprintf(e,"%c",'\n');
-    fprintf(e,"%s","CODIGO DO EVENTO: ");
-    fprintf(e,"%s",ev.codigo);
     fprintf(e,"%c",'\n');
     fclose(e);
     exibe_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt");
@@ -510,7 +606,7 @@ int cadastrar_evento(){
 
 }
 int cadastrar_organizador(){
-         FILE *o;
+      FILE *o;
 
       for(int i = 0;i<3;i++){
         for(int j = 0;j<3;j++){
