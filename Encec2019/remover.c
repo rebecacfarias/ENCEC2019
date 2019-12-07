@@ -2,8 +2,6 @@
 #include <string.h>
 #include "arquivo.h"
 
-char cod_eventos1[26][1] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","X","W","Y","Z"};
-char cod_eventos2[26][1] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","x","w","y","z"};
 
 
 
@@ -14,7 +12,7 @@ void remover_arq_evento(char *cod){
     strcat(evento,".txt");
     remove(evento);
 }
-int remover_de_eventos(char *cpf){
+int remover_de_eventos(char *cpf,char cod_eventos1[26][1],char cod_eventos2[26][1]){
     int i;
     int mudar_linha;
     char evento[65];
@@ -69,7 +67,7 @@ int remover_palestrante(){
         return 0;
     }
 }
-int remover_congressista(){
+int remover_congressista(char cod_eventos1[26][1],char cod_eventos2[26][1]){
     char cpf[15];
     int mudar_linha;
     printf("DIGITE O CPF DO CONGRESSISTA: ");
@@ -79,7 +77,7 @@ int remover_congressista(){
         mudar_linha = linha_selecionada(ARQ_CONGRESSISTA,cpf);
         remover_dados(ARQ_CONGRESSISTA,mudar_linha,LINHAS_PESSOA-1);
 
-        remover_de_eventos(cpf);
+        remover_de_eventos(cpf,cod_eventos1,cod_eventos2);
         return 1;
     }else{
         printf("\nCONGRESSISTA NAO CADASTRADO.\n");

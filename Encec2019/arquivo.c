@@ -4,6 +4,7 @@
 #include "arquivo.h"
 
 
+
 void exibe_arquivo(char *arquivo){
     FILE *c;
     char ch;
@@ -102,7 +103,7 @@ int linha_selecionada(char *arquivo, char *str){
 
 
 }
-/*
+
 void exibir_dados_pessoas(char *arquivo,char *str){
     FILE *arqv;
     arqv = fopen(arquivo,"r");
@@ -116,15 +117,16 @@ void exibir_dados_pessoas(char *arquivo,char *str){
     char texto[400], caracter;
     while(caracter!=EOF){
         caracter = fgetc(arqv);
-        if(linha_atual >= linha && linha_atual<=linha+LINHAS_PESSOA){
-            fputs(texto, arqv);
+        if(linha_atual >= linha && linha_atual<=linha+LINHAS_PESSOA-1){
+            printf("%c",caracter);
         }
-        memset(texto, 0, sizeof(char) * 400);
-        linha_atual++;
+        if(caracter=='\n')
+            linha_atual++;
     }
     }
 
 }
+
 
 void exibir_dados_evento(char *str){
     FILE *arqv;
@@ -141,15 +143,15 @@ void exibir_dados_evento(char *str){
     while(caracter!=EOF){
         caracter = fgetc(arqv);
         if(linha_atual >= linha && linha_atual<=linha+LINHAS_EVENTO){
-            fgets(texto,100,arqv);
+            printf("%c",caracter);
         }
-        memset(texto, 0, sizeof(char) * 100);
-        linha_atual++;
+        if(caracter=='\n')
+            linha_atual++;
     }
     }
 
 }
-*/
+
 //STACK OVERFLOW
 void editar_dados_pessoas(char *arquivo,int linha,char *novo_dado){
     FILE *input = fopen(arquivo, "r"); //Arquivo de entrada.
