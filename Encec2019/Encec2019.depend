@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1575736469 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
+1575920985 source:c:\users\rebeca\documents\cc\encec2019\encec2019\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -84,32 +84,32 @@
 1573067684 source:c:\users\rebeca\documents\cc\encec2019\encec2019\lista_eventos.c
 	<stdlib.h>
 
-1575635243 source:c:\users\rebeca\documents\cc\encec2019\encec2019\editar.c
+1575910260 source:c:\users\rebeca\documents\cc\encec2019\encec2019\editar.c
 	<stdio.h>
 	<string.h>
 	"arquivo.h"
 
-1575736528 source:c:\users\rebeca\documents\cc\encec2019\encec2019\listar.c
+1575921223 source:c:\users\rebeca\documents\cc\encec2019\encec2019\listar.c
 	<stdio.h>
 	<string.h>
 	<windows.h>
 	"arquivo.h"
 
-1575726538 source:c:\users\rebeca\documents\cc\encec2019\encec2019\remover.c
+1575909467 source:c:\users\rebeca\documents\cc\encec2019\encec2019\remover.c
 	<stdio.h>
 	<string.h>
 	"arquivo.h"
 
-1575736252 source:c:\users\rebeca\documents\cc\encec2019\encec2019\cadastrar.c
+1575921817 source:c:\users\rebeca\documents\cc\encec2019\encec2019\cadastrar.c
 	<stdio.h>
 	<string.h>
 	<windows.h>
 	<ctype.h>
 	"arquivo.h"
 
-1575732609 c:\users\rebeca\documents\cc\encec2019\encec2019\arquivo.h
+1575915816 c:\users\rebeca\documents\cc\encec2019\encec2019\arquivo.h
 
-1575726323 source:c:\users\rebeca\documents\cc\encec2019\encec2019\arquivo.c
+1575916587 source:c:\users\rebeca\documents\cc\encec2019\encec2019\arquivo.c
 	<stdlib.h>
 	<stdio.h>
 	<string.h>

@@ -16,8 +16,19 @@ void exibe_arquivo(char *arquivo){
     {
      printf("%c",ch); 		/*   Imprime o caracter na tela */
      ch = getc(c);    		/* Le um novo caracter no arquivo */
+     if(ch == '\n')
+        putchar('\t');
     }
     fclose(c);
+}
+
+void exibe_arquivo2(char *arquivo){
+        FILE *c;
+        char texto_str[30];
+        c = fopen(arquivo,"r");
+        while(fgets(texto_str, 30, c) != NULL)
+            printf("%s", texto_str);
+        fclose(c);
 }
 
 
@@ -45,6 +56,7 @@ int pesquisa_no_arquivo(char *arquivo,char *str){
         return 0;
     char caracter;
     int iguais=0,i=0,aux=0;
+
     while (caracter!=EOF) {
       caracter = fgetc(arqv);
       if (caracter==str[i]) {
@@ -71,6 +83,7 @@ int pesquisa_no_arquivo(char *arquivo,char *str){
         aux++;
       }
     }
+
       fclose(arqv);
       if(iguais==strlen(str))
         return 1;
@@ -114,7 +127,7 @@ void exibir_dados_pessoas(char *arquivo,char *str){
     int linha = linha_selecionada(arquivo,str);
     if(arqv != NULL){
 
-    char texto[400], caracter;
+    char caracter;
     while(caracter!=EOF){
         caracter = fgetc(arqv);
         if(linha_atual >= linha && linha_atual<=linha+LINHAS_PESSOA-1){
@@ -139,7 +152,7 @@ void exibir_dados_evento(char *str){
     int linha = linha_selecionada(arquivo,str);
     if(arqv != NULL){
 
-    char texto[100], caracter;
+    char caracter;
     while(caracter!=EOF){
         caracter = fgetc(arqv);
         if(linha_atual >= linha && linha_atual<=linha+LINHAS_EVENTO){
@@ -206,7 +219,7 @@ return 1;
 }
 
 int checa_existencia_evento(char *cod){
-    char texto[15] = "CODIGO: ";
+    char texto[20] = "CODIGO DO EVENTO: ";
     strcat(texto,cod);
     return pesquisa_no_arquivo(ARQ_EVENTOS,texto);
 }
@@ -235,4 +248,19 @@ int limpar_caracteres(char *arquivo){
     rename(ARQ_TRANSFERIR, arquivo);
 
 return 1;
+}
+
+int busca_cpf(char *arquivo,char *cpf){
+    char testa_cpf[25];
+    strcpy(testa_cpf,"\nCPF: ");
+    strcat(testa_cpf,cpf);
+    return(pesquisa_no_arquivo(arquivo,testa_cpf));
+}
+
+int busca_cpf_palest(char *arquivo,char *cpf){
+    char testa_cpf[25];
+    strcpy(testa_cpf,"(");
+    strcat(testa_cpf,cpf);
+    strcat(testa_cpf,")");
+    return(pesquisa_no_arquivo(arquivo,testa_cpf));
 }

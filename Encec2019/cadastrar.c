@@ -18,12 +18,14 @@ typedef struct{
     char cpf[12];
     char nome[30];
     char email[30];
+    char instituicao[30];
     int num_cadastro;
 }palestrante;
 typedef struct{
     char cpf[12];
     char nome[30];
     char email[30];
+    char instituicao[30];
     int num_cadastro;
 }congressista;
 
@@ -47,13 +49,15 @@ typedef struct {
 
 
 void inscricao1(char *cong_nome,char *cpf);
-void inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_evento,char *codigo);
+int inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_evento,char *codigo);
 
 
 void limpa_tela(){
-      for(int i = 0;i<3;i++){
-        for(int j = 0;j<3;j++){
-        Sleep(100);
+        putchar('\t');
+        putchar('\t');
+      for(int i = 0;i<5;i++){
+        for(int j = 0;j<5;j++){
+        Sleep(30);
         printf(".");
     }
 }
@@ -116,13 +120,11 @@ void insere_inscricoes_palest(evento ev){
 }
 
 
-char *concatenar(char *frase1,char *frase2){
-    return strcat(frase1,frase2);
-}
+
 
 int gerar_numero_cadastro(){
     FILE *arq;
-    arq = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt","r");
+    arq = fopen(ARQ_CONGRESSISTA,"r");
     char caracter;
     int linhas=0;
     while (caracter!=EOF) {
@@ -132,11 +134,11 @@ int gerar_numero_cadastro(){
              }
     }
     fclose(arq);
-    return linhas/LINHAS_PESSOA;
+    return (linhas/LINHAS_PESSOA)+1;
 }
 int gerar_numero_palestrante(){
     FILE *arq;
-    arq = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt","r");
+    arq = fopen(ARQ_PALESTRANTE,"r");
     char caracter;
     int linhas=0;
     while (caracter!=EOF) {
@@ -146,7 +148,7 @@ int gerar_numero_palestrante(){
              }
     }
     fclose(arq);
-    return linhas/LINHAS_PESSOA;
+    return (linhas/LINHAS_PESSOA)+1;
 }
 
 int checar_insc_palestrante(char *cpf, char *tipo){
@@ -162,20 +164,7 @@ int checar_insc_palestrante(char *cpf, char *tipo){
 }
 
 
-int gerar_codigo_evento(){
-    FILE *arq;
-    arq = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt","r");
-    char caracter;
-    int linhas=0;
-    while (caracter!=EOF) {
-      caracter = fgetc(arq);
-      if (caracter=='\n') {
-             linhas++;
-             }
-    }
-    fclose(arq);
-    return linhas/LINHAS_EVENTO *100;
-}
+
 
 int capacidade_evento(char *arquivo){
     if(pesquisa_no_arquivo(arquivo,"AUDITORIO 1"))
@@ -196,34 +185,43 @@ int capacidade_evento(char *arquivo){
 }
 
 
-void inscricao1(char *cong_nome,char *cpf){
+void inscricao1(char cong_nome[30],char cpf[15]){
     FILE *eventos;
     char texto_str[30];
-    eventos = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt","r");
+    eventos = fopen(ARQ_EVENTOS,"r");
     while(fgets(texto_str, 20, eventos) != NULL)
         printf("%s", texto_str);
     fclose(eventos);
-    char codigo[5],cod[5];
+    char cod[15];
     char tema[30];
-    printf("\nTEMA DO EVENTO:");
+    printf("\n\t\t\tTEMA DO EVENTO: ");
     setbuf(stdin,NULL);
     gets(tema);
-    printf("\nCODIGO DO EVENTO:");
+    printf("\n\t\t\tCODIGO DO EVENTO: ");
     setbuf(stdin,NULL);
     gets(cod);
-    strcpy(codigo,cod);
-    strcat(codigo,".txt");
-    char nome[100] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\";
-    strcat(nome,codigo);
+
+
+    char nome[100] = CAMINHO;
+    strcat(nome,cod);
+    strcat(nome,".txt");
+    if(!checa_existencia_evento(cod)){
+        printf("\n\t\t\tEVENTO NAO CADASTRADO.");
+    }
+    else{
     if(pesquisa_no_arquivo(nome,cpf)){
-        printf("\nCONGRESSISTA JA CADASTRADO NESSE EVENTO!");
+        printf("\n\t\t\tCONGRESSISTA JA CADASTRADO NESSE EVENTO!");
+        printf("\n\t\t\t>pressione qualquer tecla para voltar<");
+        setbuf(stdin,NULL);
+        getchar();
     }else{
     int limite_evento = capacidade_evento(nome);
     inscricao2(nome,cong_nome,cpf,tema,limite_evento,cod);
     }
+    }
 }
 
-void inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_evento,char *cod){
+int inscricao2(char *arquivo_evento,char nome[30],char cpf[15],char *tema,int limite_evento,char *cod){
         /*
         checa a situação do evento no qual querem se inscrever;
         criar arquivo para inscricao em eventos ou fazer no mesmo dos cong;
@@ -231,12 +229,14 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_
         FILE *evento;
         int linhas = conta_linhas(arquivo_evento);
         //formula pra contar quantos inscritos tem no evento atraves do numero de linhas
-        if(linhas/2-7>limite_evento){
-            printf("EVENTO LOTADO!");
+        if(linhas/2-8>limite_evento){
+            printf("\n\t\t\tEVENTO LOTADO!");
+            printf("\n\t\t\t>pressione qualquer tecla para voltar<");
+            setbuf(stdin,NULL);
+            getchar();
+            return 0;
         }
-        else{
-        char busca_inscricao[50];
-        int teste=0;
+        char busca_inscricao[100];
         strcpy(busca_inscricao,cpf);
         char tipo[10];
         if(pesquisa_no_arquivo(arquivo_evento,"CURSO"))
@@ -247,27 +247,34 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_
         if(!strcmp(tipo,"CURSO") || !strcmp(tipo,"OFICINA")){
             strcat(busca_inscricao,"\nTIPO DE EVENTO: ");
             strcat(busca_inscricao,tipo);
-            teste = pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\inscricoescong.txt",busca_inscricao);
-        }
-
-        if(teste){
-            printf("\n JA ESTA INSCRITO EM UMA OFICINA/CURSO. \n");
-        }
-        else{
-        evento = fopen(arquivo_evento,"a");
-        if(arquivo_evento == NULL || conta_linhas(arquivo_evento)==0){
-            printf("EVENTO NAO ENCONTRADO");
-            inscricao1(nome,cpf);
+            if(pesquisa_no_arquivo(ARQ_INSC_CONG,busca_inscricao)){
+                printf("\n\t\t\t JA ESTA INSCRITO EM UMA OFICINA/CURSO. \n");
+                printf("\n\t\t\t>pressione qualquer tecla para voltar<");
+                setbuf(stdin,NULL);
+                getchar();
+            return 0;
+            }
         }
         insere_inscricoes_congs(nome,cpf,tema,tipo,cod);
+        evento = fopen(arquivo_evento,"a");
+        if(arquivo_evento == NULL){
+            printf("\n\t\t\tEVENTO NAO ENCONTRADO");
+            return 0;
+        }
         fprintf(evento,"%s","NOME: ");
         fprintf(evento,"%s",nome);
+        fprintf(evento,"%c",'\n');
         fprintf(evento,"%s","CPF: ");
         fprintf(evento,"%s",cpf);
         fprintf(evento,"%c",'\n');
+        fprintf(evento,"%c",'\n');
         fclose(evento);
-        }
-    }
+
+        printf("\n\t\t\t INSCRICAO REALIZADA COM SUCESSO \n");
+        printf("\n\t\t\t>pressione qualquer tecla para voltar<");
+        setbuf(stdin,NULL);
+        getchar();
+    return 1;
 
 }
 
@@ -277,50 +284,53 @@ void inscricao2(char *arquivo_evento,char *nome,char *cpf,char *tema,int limite_
 int cadastrar_palestrante(){
       FILE *p;
 
-      for(int i = 0;i<3;i++){
-        for(int j = 0;j<3;j++){
-        Sleep(100);
-        printf(".");
-    }
-}
-        system("cls");
+        limpa_tela();
+
 
         palestrante palest;
         palest.num_cadastro = gerar_numero_palestrante();
         int num = gerar_numero_cadastro();
         if(num+palest.num_cadastro>300)
-            printf(">>>> CONGRESSO LOTADO <<<<");
+            printf("\n\t\t\t>>>> CONGRESSO LOTADO <<<<");
         else{
-        p = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt","a"); //POR ENQUANTO DEIXA W
+        p = fopen(ARQ_PALESTRANTE,"a");
         if(p==NULL)
             printf("erro");
-        printf("NOME: ");
+        printf("\n\t\t\tNOME: ");
         setbuf(stdin,NULL);
         gets(palest.nome);
-        printf("CPF: ");
+        printf("\t\t\tCPF: ");
         setbuf(stdin,NULL);
         scanf("%s",palest.cpf);
-        printf("EMAIL: ");
+        if(pesquisa_no_arquivo(ARQ_PALESTRANTE,palest.cpf)){
+            printf("\n\t\t\t PALESTRANTE JA CADASTRADO\n");
+            return 0;
+        }
+        printf("\t\t\tEMAIL: ");
         setbuf(stdin,NULL);
         gets(palest.email);
+        printf("\t\t\tINSTITUICAO: ");
+        setbuf(stdin,NULL);
+        gets(palest.instituicao);
 
         strupr(palest.nome);
         strupr(palest.email);
-        fprintf(p,"%s","NUMERO DE CADASTRO: ");
-        fprintf(p,"%d",palest.num_cadastro);
-        fprintf(p,"%c",'\n');
+        strupr(palest.instituicao);
+
+
         fprintf(p,"%s","NOME: ");
         fprintf(p,"%s",palest.nome);
         fprintf(p,"%c",'\n');
         fprintf(p,"%s","CPF: ");
         fprintf(p,"%s",palest.cpf);
-        if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\palestrantes.txt",palest.cpf)){
-            printf("\nja cadastrado\n");
-            return 0;
-        }
+
         fprintf(p,"%c",'\n');
         fprintf(p,"%s","EMAIL: ");
         fprintf(p,"%s",palest.email);
+        fprintf(p,"%c",'\n');
+        fprintf(p,"%s","INSTITUICAO: ");
+        fprintf(p,"%s",palest.instituicao);
+        fprintf(p,"%c",'\n');
         fprintf(p,"%c",'\n');
 
         fclose(p);
@@ -330,7 +340,7 @@ int cadastrar_palestrante(){
             printf("%s", texto_str);
         fclose(p);
 
-        printf("\nCADASTRO REALIZADO.\n");
+        printf("\n\t\t\tCADASTRO REALIZADO.\n");
         }
         return 1;
 
@@ -340,38 +350,38 @@ int cadastrar_congressista(){
 
       FILE *c;
 
-      for(int i = 0;i<3;i++){
-        for(int j = 0;j<3;j++){
-        Sleep(100);
-        printf(".");
-    }
-}
-        system("cls");
+
+
+        limpa_tela();
 
         congressista cong;
         cong.num_cadastro = gerar_numero_cadastro();
-        if(cong.num_cadastro>300)
-            printf(">>>> CONGRESSO LOTADO <<<<");
+        if(cong.num_cadastro+gerar_numero_palestrante()>300)
+            printf("\t\t\t>>>> CONGRESSO LOTADO <<<<");
         else{
-        c = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt","a"); //POR ENQUANTO DEIXA W
+        c = fopen(ARQ_CONGRESSISTA,"a");
         if(c==NULL)
             printf("erro");
-        printf("NOME: ");
+        printf("\n\t\t\tNOME: ");
         setbuf(stdin,NULL);
         gets(cong.nome);
-        printf("CPF: ");
+        printf("\t\t\tCPF: ");
         setbuf(stdin,NULL);
         scanf("%s",cong.cpf);
-        if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt",cong.cpf)){
-            printf("ja cadastrado");
+        if(pesquisa_no_arquivo(ARQ_CONGRESSISTA,cong.cpf)){
+            printf("\n\t\t\tCONGRESSISTA JA CADASTRADO");
             return 0;
         }
-        printf("EMAIL: ");
+        printf("\t\t\tEMAIL: ");
         setbuf(stdin,NULL);
         gets(cong.email);
+        printf("\t\t\tINSTITUICAO: ");
+        setbuf(stdin,NULL);
+        gets(cong.instituicao);
 
         strupr(cong.nome);
         strupr(cong.email);
+        strupr(cong.instituicao);
         fprintf(c,"%s","CPF: ");
         fprintf(c,"%s",cong.cpf);
         fprintf(c,"%c",'\n');
@@ -381,26 +391,23 @@ int cadastrar_congressista(){
         fprintf(c,"%s","EMAIL: ");
         fprintf(c,"%s",cong.email);
         fprintf(c,"%c",'\n');
-        fprintf(c,"%s","NUMERO DE CADASTRO: ");
-        fprintf(c,"%d",cong.num_cadastro);
+        fprintf(c,"%s","INSTITUICAO: ");
+        fprintf(c,"%s",cong.instituicao);
+        fprintf(c,"%c",'\n');
         fprintf(c,"%c",'\n');
 
         fclose(c);
-        char texto_str[30];
-        c = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\congressistas.txt","r");
-        while(fgets(texto_str, 20, c) != NULL)
-            printf("%s", texto_str);
-        fclose(c);
 
-        printf("\nCADASTRO REALIZADO.\n");
+
+        printf("\n\t\t\tCADASTRO REALIZADO.\n");
 
 
 
-        int linhas_eventos = conta_linhas("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt");
-        if(linhas_eventos){
+
+        if(conta_linhas(ARQ_EVENTOS)){
             char op;
             do{
-            printf("DESEJA CADASTRAR-SE EM EVENTO ALGUM EVENTO?(S/N)");
+            printf("\n\t\t\tDESEJA CADASTRAR-SE EM EVENTO ALGUM EVENTO?(S/N)");
             scanf(" %c",&op);
             op = toupper(op);
             }while(op!='S'&&op!='N');
@@ -408,7 +415,7 @@ int cadastrar_congressista(){
                 inscricao1(cong.nome,cong.cpf);
             }
         }else{
-            printf("\nAINDA NAO HA EVENTOS PARA SE INSCREVER");
+            printf("\n\t\t\tAINDA NAO HA EVENTOS PARA SE INSCREVER");
         }
 
 
@@ -458,6 +465,9 @@ void cria_arquivo_evento(char *caminho,evento ev,char **membros, char **cpfs,int
     fprintf(ev1,"%s","CARGA HORARIA: ");
     fprintf(ev1,"%s",ev.carga_horaria);
     fprintf(ev1,"%c",'\n');
+    fprintf(ev1,"%s","TIPO DE EVENTO: ");
+    fprintf(ev1,"%s",ev.tipo);
+    fprintf(ev1,"%c",'\n');
     fprintf(ev1,"%s","INSCRITOS: ");
     fprintf(ev1,"%c",'\n');
     fclose(ev1);
@@ -467,7 +477,7 @@ void cria_arquivo_evento(char *caminho,evento ev,char **membros, char **cpfs,int
 int cadastrar_evento(){
     FILE *e;
     limpa_tela();
-    e = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt","w"); //POR ENQUANTO DEIXA W
+    e = fopen(ARQ_EVENTOS,"a");
     if(e==NULL)
         printf("erro");
 
@@ -475,35 +485,43 @@ int cadastrar_evento(){
     int num;
     char **membros;
     char **cpfs;
-
+    char tipo[20];
     char caminho[100] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\" ;
-    printf("TIPO DO EVENTO(PALESTRA/GRUPO/CURSO/OFICINA): ");
+    printf("\n\t\t\tTIPO DO EVENTO(PALESTRA/GRUPO/CURSO/OFICINA): ");
     setbuf(stdin,NULL);
-    gets(ev.tipo);
-    strupr(ev.tipo);
-    while(strcmp(ev.tipo, "PALESTRA")&&strcmp(ev.tipo, "GRUPO")&&strcmp(ev.tipo, "CURSO")&&strcmp(ev.tipo, "OFICINA")){
-        printf("TIPO INVALIDO. DIGITE PALESTRA, GRUPO, CURSO OU OFICINA: ");
+    scanf("%s",tipo);
+    strupr(tipo);
+    while(strcmp(tipo, "PALESTRA")&&strcmp(tipo, "GRUPO")&&strcmp(tipo, "CURSO")&&strcmp(tipo, "OFICINA")){
+        printf("\t\t\tTIPO INVALIDO. DIGITE PALESTRA, GRUPO, CURSO OU OFICINA: ");
         setbuf(stdin,NULL);
-        gets(ev.tipo);
-        strupr(ev.tipo);
+        scanf("%s",tipo);
+        strupr(tipo);
     }
+        strcpy(ev.tipo,tipo);
+
     do{
-    printf("CODIGO(A-Z ou a-z): ");
+    printf("\t\t\t>CODIGO(A-Z ou a-z): ");
     setbuf(stdin,NULL);
     scanf("%s",ev.codigo);
     }while(((int)ev.codigo[0]<(int)'A' || (int)ev.codigo[0]>(int)'Z') && ((int)ev.codigo[0]<(int)'a' || (int)ev.codigo[0]>(int)'z'));
 
-    if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",ev.codigo)){
-        printf("EVENTO JA CADASTRADO.");
+    char pesquisa[100];
+
+    strcpy(pesquisa,CODIGO_STR);
+    strcat(pesquisa,ev.codigo);
+    if(pesquisa_no_arquivo(ARQ_EVENTOS,pesquisa)){
+        printf("\n\t\t\tEVENTO JA CADASTRADO.");
         return 0;
     }
-    printf("TEMA: ");
+    printf("\t\t\t>TEMA: ");
     setbuf(stdin,NULL);
-    scanf("%s",ev.nome);
+    gets(ev.nome);
     strupr(ev.nome);
-    if(!strcmp(ev.tipo,"GRUPO")){
+
+    char testa_cpf1[25];
+    if(!strcmp(tipo,"GRUPO")){
        do{
-       printf("NUMERO DE MEMBROS DA MESA(ATE 5): ");
+       printf("\n\t\t\t>NUMERO DE MEMBROS DA MESA(ATE 5): ");
        scanf("%d",&num);
        }while(num<1||num>5);
        membros = (char**)malloc(num*sizeof(char*));
@@ -513,76 +531,109 @@ int cadastrar_evento(){
          cpfs[i]=(char*)malloc(sizeof(char)*15);
        }
        for(int i = 0;i<num;i++){
-         printf("PALESTRANTE %d: ",i);
+         printf("\t\t\t>PALESTRANTE %d: ",i);
          setbuf(stdin,NULL);
          gets(membros[i]);
-         printf("CPF %d: ",i);
+         printf("\t\t\t>CPF %d: ",i);
          setbuf(stdin,NULL);
          gets(cpfs[i]);
-         if(!(pesquisa_no_arquivo(ARQ_PALESTRANTE,cpfs[i]))){
-            printf("PALESTRANTE NAO CADASTRADO.");
+         strcpy(testa_cpf1,"\nCPF: ");
+         strcat(testa_cpf1,cpfs[i]);
+         if(!(pesquisa_no_arquivo(ARQ_PALESTRANTE,testa_cpf1))){
+            printf("\t\t\tPALESTRANTE NAO CADASTRADO.");
             return 0;
          }
        }
 
     }else{
-    printf("PALESTRANTE: ");
+    printf("\t\t\t>PALESTRANTE: ");
     setbuf(stdin,NULL);
-    scanf("%s",ev.palestrante);
+    gets(ev.palestrante);
     strupr(ev.palestrante);
-    printf("CPF DO PALESTRANTE: ");
+    printf("\t\t\t>CPF DO PALESTRANTE: ");
     setbuf(stdin,NULL);
     scanf("%s",ev.cpf_palestrante);
+    printf("%s",ev.cpf_palestrante);
+    char testa_cpf[25];
+    strcpy(testa_cpf,"\nCPF: ");
+    strcat(testa_cpf,ev.cpf_palestrante);
     if(!(pesquisa_no_arquivo(ARQ_PALESTRANTE,ev.cpf_palestrante))){
-        printf("PALESTRANTE NAO CADASTRADO.");
+        printf("\t\t\tPALESTRANTE NAO CADASTRADO.");
         return 0;
     }
+
+    /*
+    char teste_palestrante[100];
+    if(strcmp(tipo,"GRUPO") && strcmp(tipo,"PALESTRA")){
+
+        strcpy(teste_palestrante,"CPF: ");
+        strcat(teste_palestrante,ev.cpf_palestrante);
+        strcat(teste_palestrante,"\nTIPO DE EVENTO: ");
+        strcat(teste_palestrante,tipo);
+
+        if(pesquisa_no_arquivo(ARQ_INSC_PALEST,teste_palestrante)){
+            printf("\n\t\t\t PALESTRANTE JA MINISTRA %s",tipo);
+            return 0;
+        }
+    }
+    */
+    if(checar_insc_palestrante(ev.cpf_palestrante,tipo)){
+        printf("\t\t\tPALESTRANTE JA MINISTRA %s",tipo);
+        return 0;
+    }
+    strcpy(ev.tipo,tipo);
     insere_inscricoes_palest(ev);
     }
-    printf("CARGA HORARIA: ");
+    printf("\t\t\t>CARGA HORARIA: ");
     setbuf(stdin,NULL);
-    gets(ev.carga_horaria);
-    printf("---------\n");
-    printf("-> AUDITORIO 1\n");
-    printf("-> AUDITORIO 2\n");
-    printf("-> AUDITORIO 3\n");
-    printf("-> SALA 1\n");
-    printf("-> SALA 2\n");
-    printf("-> SALA 3\n");
-    printf("-> LABORATORIO 1\n");
-    printf("-> LABORATORIO 2\n");
-    printf("LOCAL: ");
+    scanf("%s",ev.carga_horaria);
+    char local[20];
+    printf("\t\t\t----------------\n");
+    printf("\t\t\t-> AUDITORIO 1\n");
+    printf("\t\t\t-> AUDITORIO 2\n");
+    printf("\t\t\t-> AUDITORIO 3\n");
+    printf("\t\t\t-> SALA 1\n");
+    printf("\t\t\t-> SALA 2\n");
+    printf("\t\t\t-> SALA 3\n");
+    printf("\t\t\t-> LABORATORIO 1\n");
+    printf("\t\t\t-> LABORATORIO 2\n");
+    printf("\t\t\t----------------\n");
+    printf("\t\t\t>LOCAL: ");
     setbuf(stdin,NULL);
-    gets(ev.local);
-    strupr(ev.local);
-    while(strcmp(ev.local, "AUDITORIO 1")&&strcmp(ev.local, "AUDITORIO 2")&&strcmp(ev.local, "AUDITORIO 3")&&strcmp(ev.local, "SALA 1")&&strcmp(ev.local, "SALA 2")&&strcmp(ev.local, "SALA 3")&&strcmp(ev.local, "LABORATORIO 1")&&strcmp(ev.local, "LABORATORIO 2")){
-        printf("LOCAL INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
+    gets(local);
+    strupr(local);
+
+    while(strcmp(local, "AUDITORIO 1")&&strcmp(local, "AUDITORIO 2")&&strcmp(local, "AUDITORIO 3")&&strcmp(local, "SALA 1")&&strcmp(local, "SALA 2")&&strcmp(local, "SALA 3")&&strcmp(local, "LABORATORIO 1")&&strcmp(local, "LABORATORIO 2")){
+        printf("\t\t\tLOCAL INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
         setbuf(stdin,NULL);
-        gets(ev.local);
-        strupr(ev.local);
+        gets(local);
+        strupr(local);
     }
-    printf("DATA: ");
+    strcpy(ev.local,local);
+    char data[12];
+    printf("\t\t\t>DATA: ");
     setbuf(stdin,NULL);
-    scanf("%s",ev.data);
-    printf("HORARIO: ");
+    scanf("%s",data);
+    printf("\t\t\t>HORARIO: ");
     setbuf(stdin,NULL);
-    gets(ev.horario);
-    char teste[50] = "DATA: ";
-    strcat(teste,ev.data);
+    scanf("%s",ev.horario);
+    char teste[100] = "DATA: ";
+    strcat(teste,data);
     strcat(teste,"\n");
     strcat(teste,"LOCAL: ");
     strcat(teste,ev.local);
     strcat(teste,"\n");
     strcat(teste,"HORA: ");
     strcat(teste,ev.horario);
-//VE SE FUNCIONA
-    if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",teste)){
-        printf("IMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
+
+    if(pesquisa_no_arquivo(ARQ_EVENTOS,teste)){
+        printf("\t\t\tIMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
         return 0;
     }
 
     fprintf(e,"%s","CODIGO DO EVENTO: ");
     fprintf(e,"%s",ev.codigo);
+    fprintf(e,"%s"," ");
     fprintf(e,"%c",'\n');
     fprintf(e,"%s","TEMA: ");
     fprintf(e,"%s",ev.nome);
@@ -604,13 +655,9 @@ int cadastrar_evento(){
     fprintf(e,"%s",ev.cpf_palestrante);
     fprintf(e,"%c",')');
     }
-    if(checar_insc_palestrante(ev.cpf_palestrante,ev.tipo)){
-        printf("PALESTRANTE JA MINISTRA UM CURSO/OFICINA.");
-        return 0;
-    }
     fprintf(e,"%c",'\n');
     fprintf(e,"%s","DATA: ");
-    fprintf(e,"%s",ev.data);
+    fprintf(e,"%s",data);
     fprintf(e,"%c",'\n');
     fprintf(e,"%s","LOCAL: ");
     fprintf(e,"%s",ev.local);
@@ -621,15 +668,18 @@ int cadastrar_evento(){
     fprintf(e,"%s","CARGA HORARIA: ");
     fprintf(e,"%s",ev.carga_horaria);
     fprintf(e,"%c",'\n');
+    fprintf(e,"%s","TIPO DE EVENTO: ");
+    fprintf(e,"%s",ev.tipo);
+    fprintf(e,"%c",'\n');
     fprintf(e,"%c",'\n');
     fclose(e);
-    exibe_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt");
+    //exibe_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt");
 
     char cod[10];
     strcpy(cod,ev.codigo);
     strcat(cod,".txt");
     strcat(caminho,cod);
-    printf("\n%s",caminho);
+    //printf("\n%s",caminho);
 
 
     cria_arquivo_evento(caminho,ev,membros,cpfs,num);
@@ -642,26 +692,25 @@ int cadastrar_evento(){
 int cadastrar_organizador(){
       FILE *o;
 
-      for(int i = 0;i<3;i++){
-        for(int j = 0;j<3;j++){
-        Sleep(100);
-        printf(".");
-    }
-}
-        system("cls");
+        limpa_tela();
 
         organizador org;
 
-        o = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\organizadores.txt","w"); //POR ENQUANTO DEIXA W
+        o = fopen("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\organizadores.txt","a");
         if(o==NULL)
             printf("erro");
-        printf("NOME: ");
+        printf("\t\t\tNOME: ");
         setbuf(stdin,NULL);
         gets(org.nome);
-        printf("CPF: ");
+        printf("\t\t\tCPF: ");
         setbuf(stdin,NULL);
         scanf("%s",org.cpf);
-        printf("EMAIL: ");
+        if(busca_cpf(ARQ_ORGANIZADORES,org.cpf)){
+            printf("\nJA CADASTRADO\n");
+            Sleep(400);
+            return 0;
+        }
+        printf("\t\t\tEMAIL: ");
         setbuf(stdin,NULL);
         gets(org.email);
 
@@ -672,10 +721,6 @@ int cadastrar_organizador(){
         fprintf(o,"%c",'\n');
         fprintf(o,"%s","CPF: ");
         fprintf(o,"%s",org.cpf);
-        if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\organizadores.txt",org.cpf)){
-            printf("\nja cadastrado\n");
-            return 0;
-        }
         fprintf(o,"%c",'\n');
         fprintf(o,"%s","EMAIL: ");
         fprintf(o,"%s",org.email);
@@ -706,20 +751,20 @@ int cadastrar_evento2(char *nome, char*cpf){
     int num;
     char **membros;
     char **cpfs;
-
+    char tipo[20];
     char caminho[100] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\" ;
-    printf("TIPO DO EVENTO(PALESTRA/GRUPO/CURSO/OFICINA): ");
+    printf("\t\t\tTIPO DO EVENTO(PALESTRA/GRUPO/CURSO/OFICINA): ");
     setbuf(stdin,NULL);
-    gets(ev.tipo);
-    strupr(ev.tipo);
-    while(strcmp(ev.tipo, "PALESTRA")&&strcmp(ev.tipo, "GRUPO")&&strcmp(ev.tipo, "CURSO")&&strcmp(ev.tipo, "OFICINA")){
-        printf("TIPO INVALIDO. DIGITE PALESTRA, GRUPO, CURSO OU OFICINA: ");
+    scanf("%s",tipo);
+    strupr(tipo);
+    while(strcmp(tipo, "PALESTRA")&&strcmp(tipo, "GRUPO")&&strcmp(tipo, "CURSO")&&strcmp(tipo, "OFICINA")){
+        printf("\t\t\tTIPO INVALIDO. DIGITE PALESTRA, GRUPO, CURSO OU OFICINA: ");
         setbuf(stdin,NULL);
-        gets(ev.tipo);
-        strupr(ev.tipo);
+        gets(tipo);
+        strupr(tipo);
     }
-    if(checar_insc_palestrante(cpf,ev.tipo)){
-        printf("PALESTRANTE JA MINISTRA UM CURSO/OFICINA.");
+    if(checar_insc_palestrante(cpf,tipo)){
+        printf("\t\t\tPALESTRANTE JA MINISTRA UM CURSO/OFICINA.");
         return 0;
     }
     do{
@@ -728,17 +773,21 @@ int cadastrar_evento2(char *nome, char*cpf){
     scanf("%s",ev.codigo);
     }while(((int)ev.codigo[0]<(int)'A' || (int)ev.codigo[0]>(int)'Z') && ((int)ev.codigo[0]<(int)'a' || (int)ev.codigo[0]>(int)'z'));
 
-    if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",ev.codigo)){
-        printf("EVENTO JA CADASTRADO.");
+    char pesquisa[100];
+    strcpy(pesquisa,CODIGO_STR);
+    strcat(pesquisa,ev.codigo);
+    if(pesquisa_no_arquivo(ARQ_EVENTOS,pesquisa)){
+        printf("\n\t\t\tEVENTO JA CADASTRADO.");
         return 0;
     }
-    printf("TEMA: ");
+
+    printf("\t\t\tTEMA: ");
     setbuf(stdin,NULL);
     scanf("%s",ev.nome);
     strupr(ev.nome);
     if(!strcmp(ev.tipo,"GRUPO")){
        do{
-       printf("NUMERO DE MEMBROS DA MESA(ATE 5): ");
+       printf("\t\t\tNUMERO DE MEMBROS DA MESA(ATE 5): ");
        scanf("%d",&num);
        }while(num<1||num>5);
        membros = (char**)malloc(num*sizeof(char*));
@@ -748,14 +797,17 @@ int cadastrar_evento2(char *nome, char*cpf){
          cpfs[i]=(char*)malloc(sizeof(char)*15);
        }
        for(int i = 0;i<num;i++){
-         printf("PALESTRANTE %d: ",i);
+         printf("\t\t\tPALESTRANTE %d: ",i);
          setbuf(stdin,NULL);
          gets(membros[i]);
-         printf("CPF %d: ",i);
+         printf("\t\t\tCPF %d: ",i);
          setbuf(stdin,NULL);
          gets(cpfs[i]);
+         char testa_cpf1[25];
+        strcpy(testa_cpf1,"\nCPF: ");
+        strcat(testa_cpf1,cpfs[i]);
          if(!(pesquisa_no_arquivo(ARQ_PALESTRANTE,cpfs[i]))){
-            printf("PALESTRANTE NAO CADASTRADO.");
+            printf("\t\t\tPALESTRANTE NAO CADASTRADO.");
             return 0;
          }
        }
@@ -763,36 +815,38 @@ int cadastrar_evento2(char *nome, char*cpf){
     }else{
     strcpy(ev.palestrante,nome);
     strcpy(ev.cpf_palestrante,cpf);
+    strcpy(ev.tipo,tipo);
     insere_inscricoes_palest(ev);
     }
-    printf("CARGA HORARIA: ");
+    printf("\t\t\tCARGA HORARIA: ");
     setbuf(stdin,NULL);
     gets(ev.carga_horaria);
-    printf("---------\n");
-    printf("-> AUDITORIO 1\n");
-    printf("-> AUDITORIO 2\n");
-    printf("-> AUDITORIO 3\n");
-    printf("-> SALA 1\n");
-    printf("-> SALA 2\n");
-    printf("-> SALA 3\n");
-    printf("-> LABORATORIO 1\n");
-    printf("-> LABORATORIO 2\n");
-    printf("LOCAL: ");
+    printf("\t\t\t----------------\n");
+    printf("\t\t\t-> AUDITORIO 1\n");
+    printf("\t\t\t-> AUDITORIO 2\n");
+    printf("\t\t\t-> AUDITORIO 3\n");
+    printf("\t\t\t-> SALA 1\n");
+    printf("\t\t\t-> SALA 2\n");
+    printf("\t\t\t-> SALA 3\n");
+    printf("\t\t\t-> LABORATORIO 1\n");
+    printf("\t\t\t-> LABORATORIO 2\n");
+    printf("\t\t\t----------------\n");
+    printf("\t\t\tLOCAL: ");
     setbuf(stdin,NULL);
     gets(ev.local);
     strupr(ev.local);
     while(strcmp(ev.local, "AUDITORIO 1")&&strcmp(ev.local, "AUDITORIO 2")&&strcmp(ev.local, "AUDITORIO 3")&&strcmp(ev.local, "SALA 1")&&strcmp(ev.local, "SALA 2")&&strcmp(ev.local, "SALA 3")&&strcmp(ev.local, "LABORATORIO 1")&&strcmp(ev.local, "LABORATORIO 2")){
-        printf("LOCAL INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
+        printf("\t\t\tLOCAL INVALIDO. DIGITE UM DOS LOCAIS LISTADOS: ");
         setbuf(stdin,NULL);
         gets(ev.local);
         strupr(ev.local);
     }
-    printf("DATA: ");
+    printf("\t\t\tDATA: ");
     setbuf(stdin,NULL);
     scanf("%s",ev.data);
-    printf("HORARIO: ");
+    printf("\t\t\tHORARIO: ");
     setbuf(stdin,NULL);
-    gets(ev.horario);
+    scanf("%s",ev.horario);
     char teste[50] = "DATA: ";
     strcat(teste,ev.data);
     strcat(teste,"\n");
@@ -803,7 +857,7 @@ int cadastrar_evento2(char *nome, char*cpf){
     strcat(teste,ev.horario);
 //VE SE FUNCIONA
     if(pesquisa_no_arquivo("C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\eventos.txt",teste)){
-        printf("IMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
+        printf("\t\t\tIMPOSSIVEL CADASTRAR. LOCAL OCUPADO NESSE HORARIO.");
         return 0;
     }
 

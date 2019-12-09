@@ -49,7 +49,7 @@ int editar_palestrante(){
             strcat(novo_dado,email);
             strcat(novo_dado,"\n");
         }
-        editar_dados_pessoas(ARQ_PALESTRANTE,mudar_linha,novo_dado);
+        editar_dados_pessoas(ARQ_PALESTRANTE,mudar_linha-2,novo_dado);
         return 1;
 
     }
