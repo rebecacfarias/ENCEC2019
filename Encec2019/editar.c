@@ -11,7 +11,7 @@
 #define SALA3 30
 #define LAB 20
 
-
+//EDICOES
 
 int editar_palestrante(){
     char cpf[15];
@@ -19,6 +19,7 @@ int editar_palestrante(){
     char nome[30];
     char novo_dado[50];
     int op,mudar_linha;
+    borda();
     printf("DIGITE O CPF DO PALESTRANTE: ");
     setbuf(stdin,NULL);
     gets(cpf);
@@ -65,6 +66,7 @@ int editar_congressista(){
     char nome[30];
     char novo_dado[50];
     int op,mudar_linha;
+    borda();
     printf("DIGITE O CPF DO CONGRESSISTA: ");
     setbuf(stdin,NULL);
     gets(cpf);
@@ -111,6 +113,7 @@ int editar_evento(){
     char novo_dado[50];
     char caminho[] = "C:\\Users\\Rebeca\\Documents\\CC\\ENCEC2019\\Encec2019\\";
     int op,mudar_linha;
+    borda();
     printf("DIGITE O CODIGO DO EVENTO: ");
     setbuf(stdin,NULL);
     gets(cod);
@@ -211,6 +214,7 @@ int editar_organizador(){
     char nome[30];
     char novo_dado[50];
     int op,mudar_linha;
+    borda();
     printf("DIGITE O CPF DO ORGANIZADOR: ");
     setbuf(stdin,NULL);
     gets(cpf);

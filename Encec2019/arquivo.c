@@ -121,7 +121,7 @@ void exibir_dados_pessoas(char *arquivo,char *str){
     FILE *arqv;
     arqv = fopen(arquivo,"r");
     if(arqv==NULL){
-        printf("erro");
+        //printf("erro");
     }
     int linha_atual = 0;
     int linha = linha_selecionada(arquivo,str);
@@ -146,7 +146,7 @@ void exibir_dados_evento(char *str){
     char *arquivo = ARQ_EVENTOS;
     arqv = fopen(arquivo,"r");
     if(arqv==NULL){
-        printf("erro");
+        //printf("erro");
     }
     int linha_atual = 0;
     int linha = linha_selecionada(arquivo,str);
@@ -170,7 +170,7 @@ void editar_dados_pessoas(char *arquivo,int linha,char *novo_dado){
     FILE *input = fopen(arquivo, "r"); //Arquivo de entrada.
     FILE *output = fopen(ARQ_TRANSFERIR, "w"); //Arquivo de saída.
     if(input==NULL || output ==NULL){
-        printf("erro");
+        //printf("erro");
     }
     int linha_atual = 1;
     char caracter;
@@ -263,4 +263,18 @@ int busca_cpf_palest(char *arquivo,char *cpf){
     strcat(testa_cpf,cpf);
     strcat(testa_cpf,")");
     return(pesquisa_no_arquivo(arquivo,testa_cpf));
+}
+
+
+void borda(){
+    for(int i = 0;i<90;i++){
+        printf("%c",242);
+    }
+    putchar('\n');
+    printf("\n\t\t\t#EncontroCampinenseDosEstudantesdeComputacao\n");
+    for(int i = 0;i<90;i++){
+        printf("%c",242);
+    }
+    putchar('\n');
+
 }

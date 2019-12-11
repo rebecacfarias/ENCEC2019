@@ -31,7 +31,8 @@ int limpar_caracteres(char *arquivo);
 int busca_cpf(char *arquivo,char *cpf);
 int busca_cpf_palest(char *arquivo,char *cpf);
 void exibe_arquivo2(char *arquivo);
-
-//especificas para o projeto
 int checa_existencia_evento(char *cod);
+
+void borda();
+
 #endif // ARQUIVO_H_INCLUDED

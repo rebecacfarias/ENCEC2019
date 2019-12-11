@@ -16,7 +16,7 @@ void listar_palestrante(){
 void listar_congressista(){
     if(conta_linhas(ARQ_CONGRESSISTA)){
     printf("CONGRESSISTAS INSCRITOS: \n\n");
-    exibe_arquivo(ARQ_CONGRESSISTA);
+    exibe_arquivo2(ARQ_CONGRESSISTA);
     }else{
         printf("\t\t\tNAO HA CONGRESSISTAS CADASTRADOS.");
     }
@@ -24,14 +24,14 @@ void listar_congressista(){
 void listar_evento(){
     if(conta_linhas(ARQ_EVENTOS)){
     printf("EVENTOS CADASTRADOS: \n\n");
-    exibe_arquivo(ARQ_EVENTOS);
+    exibe_arquivo2(ARQ_EVENTOS);
     }else{
         printf("\t\t\tNAO HA EVENTOS CADASTRADOS.");
     }
 }
 void listar_organizador(){
     printf("ORGANIZADORES: \n\n");
-    exibe_arquivo(ARQ_ORGANIZADORES);
+    exibe_arquivo2(ARQ_ORGANIZADORES);
 
 }
 
@@ -48,7 +48,7 @@ int listar_inscritos(){
     strcpy(arquivo,CAMINHO);
     strcat(arquivo,cod);
     strcat(arquivo,".txt");
-    exibe_arquivo(arquivo);
+    exibe_arquivo2(arquivo);
     return 1;
 
 }

@@ -47,7 +47,7 @@ int remover_palestrante(){
     char cpf[15];
     char nome[30];
     int mudar_linha, linha_evento;
-    printf("DIGITE O CPF DO PALESTRANTE: ");
+    printf("\t\t\tDIGITE O CPF DO PALESTRANTE: ");
     setbuf(stdin,NULL);
     gets(cpf);
     if(pesquisa_no_arquivo(ARQ_PALESTRANTE,cpf)){
@@ -59,21 +59,21 @@ int remover_palestrante(){
         }
         return 1;
     }else{
-        printf("\nPALESTRANTE NAO CADASTRADO.\n");
+        printf("\n\t\t\tPALESTRANTE NAO CADASTRADO.\n");
         return 0;
     }
 }
 int remover_congressista(char cod_eventos1[26][1],char cod_eventos2[26][1]){
     char cpf[15];
     int mudar_linha;
-    printf("DIGITE O CPF DO CONGRESSISTA: ");
+    printf("\t\t\tDIGITE O CPF DO CONGRESSISTA: ");
     setbuf(stdin,NULL);
     gets(cpf);
-    if(busca_cpf(ARQ_CONGRESSISTA,cpf)){
+    if(pesquisa_no_arquivo(ARQ_CONGRESSISTA,cpf)){
         mudar_linha = linha_selecionada(ARQ_CONGRESSISTA,cpf);
         remover_dados(ARQ_CONGRESSISTA,mudar_linha,LINHAS_PESSOA-1);
 
-        remover_de_eventos(cpf,cod_eventos1,cod_eventos2);
+        //remover_de_eventos(cpf,cod_eventos1,cod_eventos2);
         return 1;
     }else{
         printf("\nCONGRESSISTA NAO CADASTRADO.\n");
@@ -84,7 +84,7 @@ int remover_evento(){
     char cod[1];
     char aux[30] = CODIGO_STR;
     int mudar_linha;
-    printf("DIGITE O CODIGO DO EVENTO: ");
+    printf("\t\t\tDIGITE O CODIGO DO EVENTO: ");
     setbuf(stdin,NULL);
     gets(cod);
     strcat(aux,cod);
@@ -94,14 +94,14 @@ int remover_evento(){
         remover_arq_evento(cod);
         return 1;
     }else{
-        printf("\nEVENTO NAO CADASTRADO.\n");
+        printf("\n\t\t\tEVENTO NAO CADASTRADO.\n");
         return 0;
     }
 }
 int remover_organizador(){
     char cpf[15];
     int mudar_linha;
-    printf("DIGITE O CPF DO ORGANIZADOR: ");
+    printf("\t\t\tDIGITE O CPF DO ORGANIZADOR: ");
     setbuf(stdin,NULL);
     gets(cpf);
     if(busca_cpf(ARQ_ORGANIZADORES,cpf)){
@@ -109,7 +109,7 @@ int remover_organizador(){
         remover_dados(ARQ_ORGANIZADORES,mudar_linha,mudar_linha+LINHAS_PESSOA-2);
         return 1;
     }else{
-        printf("\nORGANIZADOR NAO CADASTRADO.\n");
+        printf("\n\t\t\tORGANIZADOR NAO CADASTRADO.\n");
         return 0;
     }
 }

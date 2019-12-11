@@ -4,9 +4,28 @@
 #include <windows.h>
 #include "arquivo.h"
 
+/*
+    REBECA CUNHA DE FARIAS - PROJETO DA DISCIPLINA DE LABORATÓRIO 1, UEPB
+____________________________________________________________________________________
+
+    -> DIVISÃO DO CÓDIGO:
+
+      MAIN.C  - CADASTRAR.C  - EDITAR.C   - REMOVER.C  - LISTAR.C
+
+    -> PARA MANIPULAÇÃO DOS ARQUIVOS (TXT):
+
+      ARQUIVO.H  -   ARQUIVO.C
+
+____________________________________________________________________________________
+*/
+
+
+// CODIGO DOS EVENTOS: LETRAS MAIUSCULAS E MINUSCULAS
 char cod_eventos1[26][1] = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","X","W","Y","Z"};
 char cod_eventos2[26][1] = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","x","w","y","z"};
 
+
+//DECLARAÇÃO DE FUNÇÕES
 int inscricao1(char nome[30],char cpf[15]);
 
 int tela_inicial();
@@ -45,16 +64,18 @@ void pontinhos();
 void linhas();
 
 void cabecalho(){
-    pontinhos();
-    printf("\n\t\t\tGERENCIAMENTO ENCEC 2019\n");
-    printf("\n\t\t_______________________________________\n");
+    printf("\n\t\t\t   GERENCIAMENTO ENCEC 2019   \n");
+    printf("\n\t\t   _______________________________________\n");
 }
 void linha(){
     printf("\n\t\t_______________________________________\n");
 }
 
+
+//MENU PRINCIPAL
 void menu(){
     system("cls");
+    borda();
     int op=0;
     cabecalho();
     printf("\n\t\t\t1 - CADASTRAR\n");
@@ -68,6 +89,7 @@ void menu(){
     scanf("%d",&op);
     while(op<=0||op>6){
         system("cls");
+        borda();
         printf("\n\t\t\tGERENCIAMENTO ENCEC 2019\n");
         linha();
         printf("\n\t\t\t1 - CADASTRAR\n");
@@ -94,9 +116,11 @@ void menu(){
     getchar();
     menu();
 }
+//CADASTRAR
 void submenu_cadastrar(){
     Sleep(300);
     system("cls");
+    borda();
     int op=0;
     printf("\n\t\t\tCADASTRAMENTO ENCEC 2019\n");
     linhas();
@@ -120,6 +144,7 @@ void submenu_cadastrar(){
         scanf("%d",&op);
     }
     system("cls");
+    borda();
     printf("\n");
     if(op==1){
         cadastrar_congressista();
@@ -136,9 +161,12 @@ void submenu_cadastrar(){
     }
     else{menu();}
 }
+
+//EDITAR
 void submenu_editar(){
     Sleep(300);
     system("cls");
+    borda();
     int op=0;
     printf("\n\t\t\t(EDITAR) ENCEC 2019\n");
     linhas();
@@ -151,6 +179,7 @@ void submenu_editar(){
     scanf("%d",&op);
     while(op<=0||op>5){
         system("cls");
+        borda();
         printf("\n\t\t\t(EDITAR) ENCEC 2019\n");
         linha();
         printf("\n\t\t\t1 - EDITAR CONGRESSISTA\n");
@@ -170,9 +199,12 @@ void submenu_editar(){
     default: menu();
     }
 }
+
+//REMOVER
 void submenu_remover(){
     Sleep(300);
     system("cls");
+    borda();
     int op=0;
     printf("\n\t\t\t(REMOVER) ENCEC 2019\n\n");
     linhas();
@@ -196,6 +228,7 @@ void submenu_remover(){
         scanf("%d",&op);
     }
     system("cls");
+    borda();
     switch(op){
     case 1: remover_congressista(cod_eventos1,cod_eventos2);break;
     case 2: remover_palestrante();break;
@@ -204,9 +237,12 @@ void submenu_remover(){
     default: menu();
     }
 }
+
+//LISTAR
 void submenu_listar(){
     Sleep(300);
     system("cls");
+    borda();
     int op=0;
     printf("\n\t\t\t(LISTAR) ENCEC 2019\n");
     linhas();
@@ -220,6 +256,7 @@ void submenu_listar(){
     scanf("%d",&op);
     while(op<=0||op>6){
         system("cls");
+        borda();
         printf("\n\t\t\t(LISTAR) ENCEC 2019\n");
         linha();
         printf("\n\t\t\t1 - LISTAR CONGRESSISTAS\n");
@@ -234,6 +271,7 @@ void submenu_listar(){
     }
 
     system("cls");
+    borda();
     switch(op){
     case 1: listar_congressista();break;
     case 2: listar_palestrante();break;
@@ -244,10 +282,12 @@ void submenu_listar(){
     }
 }
 
+//PARA INSCREVER CONG/PALEST JA CADASTRADOS EM EVENTOS
 int submenu_ja_cadastrado(){
     int op;
     do{
     system("cls");
+    borda();
     cabecalho();
     printf("\n\t\t\t1 - ACESSAR CONGRESSISTA\n");
     printf("\n\t\t\t2 - ACESSAR PALESTRANTE\n");
@@ -261,6 +301,7 @@ int submenu_ja_cadastrado(){
     char nome[30];
     char cpf[15];
     system("cls");
+    borda();
     printf("\n\t\t\t>NOME: ");
     setbuf(stdin,NULL);
     gets(nome);
@@ -275,7 +316,7 @@ int submenu_ja_cadastrado(){
       }
       do{
         system("cls");
-        cabecalho();
+        borda();
         printf("\n\t\t\t1 - CADASTRAR-SE EM EVENTO\n");
         printf("\n\t\t\t2 - VOLTAR\n");
 
@@ -283,8 +324,8 @@ int submenu_ja_cadastrado(){
         scanf("%d",&op);
       }while(op<1 || op>3);
       system("cls");
-      cabecalho();
-      if(op==2){
+      borda();
+      if(op==1){
         inscricao1(nome,cpf);
       }
       else{menu();}
@@ -297,22 +338,25 @@ int submenu_ja_cadastrado(){
       }
       do{
         system("cls");
-        cabecalho();
+        borda();
         printf("\n\t\t\t1 - CADASTRAR EVENTO\n");
         printf("\n\t\t\t2 - VOLTAR\n");
         printf("\n\t\t\t-> ");
         scanf("%d",&op);
       }while(op<1 || op>3);
       system("cls");
+      borda();
       cabecalho();
       switch(op){
         case 1: cadastrar_evento2(nome,cpf);break;
         default: menu();
       }
-    }else menu();
-    submenu_ja_cadastrado();
+    }
+
     return 1;
 }
+
+//LOGIN DO ORGANIZADOR
 int submenu_logar(){
     system("cls");
     char cpf[15];
@@ -336,9 +380,11 @@ int submenu_logar(){
 
 }
 
+//TELA INICIAL QUE PERMITE CADASTRAR ORGANIZADORES OU LOGAR COMO ORGANIZADOR JA CADASTRADO
 int tela_inicial(){
     system("cls");
     int op=0;
+    borda();
     cabecalho();
     printf("\n\t\t\t1 - CADASTRAR ORGANIZADOR\n");
     printf("\n\t\t\t2 - LOGAR COMO ORGANIZADOR\n");
@@ -347,6 +393,7 @@ int tela_inicial(){
     scanf("%d",&op);
     while(op<0||op>2){
         system("cls");
+        borda();
         cabecalho();
         printf("\n\t\t\t1 - CADASTRAR ORGANIZADOR\n");
         printf("\n\t\t\t2 - LOGAR COMO ORGANIZADOR\n");
@@ -357,9 +404,10 @@ int tela_inicial(){
     switch(op){
     case 1: cadastrar_organizador(); break;
     case 2: submenu_logar(); break;
-    default: return 0;
+    case 0: return 0;
     }
-    return 0;
+    tela_inicial();
+    return 1;
 }
 
 //coisinhas
@@ -389,6 +437,8 @@ void linhas(){
 }
         putchar('\n');
 }
+
+//TELA INICIAL DE CARREGAMENTO
 void tela_carregamento(){
     linhas();
     char texto[] = "ENCEC 2019";
@@ -405,13 +455,16 @@ void tela_carregamento(){
     linhas();
     Sleep(50);
 }
+
+//MAIN
 int main(){
     system("mode con:cols=90 lines=34");
-    system("color 1F");
+    system("color 70");
     tela_carregamento();
     printf("\n\n\t\t>pressione enter para iniciar o gerenciamento<");
     setbuf(stdin,NULL);
     getchar();
+    pontinhos();
     tela_inicial();
     return 0;
 }
